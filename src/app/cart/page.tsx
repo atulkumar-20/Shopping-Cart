@@ -6,7 +6,8 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
 export default function CartPage() {
-  const { items, removeFromCart, updateQuantity, totalItems, totalPrice } = useCart();
+  const { items, removeFromCart, updateQuantity, totalItems, totalPrice } =
+    useCart();
 
   if (items.length === 0) {
     return (
@@ -14,7 +15,9 @@ export default function CartPage() {
         <div className="bg-white p-8 rounded-lg shadow-md text-center">
           <h1 className="text-2xl font-bold mb-4">Your Cart is Empty</h1>
           <ShoppingBag size={64} className="mx-auto mb-4 opacity-20" />
-          <p className="mb-6">Looks like you haven't added anything to your cart yet.</p>
+          <p className="mb-6">
+            Looks like you haven't added anything to your cart yet.
+          </p>
           <Link href="/">
             <Button className="bg-blue-500 hover:bg-blue-600">
               Start Shopping
@@ -28,12 +31,12 @@ export default function CartPage() {
   return (
     <div className="pt-24 px-4 md:px-6 lg:px-8 max-w-4xl mx-auto">
       <h1 className="text-2xl font-bold mb-6">Your Cart ({totalItems})</h1>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-2">
           <div className="bg-white rounded-lg shadow-md p-6 mb-6">
             <ul className="divide-y">
-              {items.map(item => (
+              {items.map((item) => (
                 <li key={item.id} className="py-4 first:pt-0 last:pb-0">
                   <div className="flex gap-4">
                     <div className="relative h-20 w-20 flex-shrink-0">
@@ -47,26 +50,34 @@ export default function CartPage() {
                     </div>
                     <div className="flex-1">
                       <h3 className="font-medium">{item.name}</h3>
-                      <p className="text-sm text-gray-500 line-clamp-1">{item.description}</p>
+                      <p className="text-sm text-gray-500 line-clamp-1">
+                        {item.description}
+                      </p>
                       <div className="flex justify-between items-center mt-2">
                         <div className="flex items-center border rounded">
-                          <button 
-                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                          <button
+                            onClick={() =>
+                              updateQuantity(item.id, item.quantity - 1)
+                            }
                             className="px-2 py-1 text-gray-500 hover:text-gray-700"
                           >
                             <Minus size={14} />
                           </button>
                           <span className="px-2">{item.quantity}</span>
-                          <button 
-                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                          <button
+                            onClick={() =>
+                              updateQuantity(item.id, item.quantity + 1)
+                            }
                             className="px-2 py-1 text-gray-500 hover:text-gray-700"
                           >
                             <Plus size={14} />
                           </button>
                         </div>
                         <div className="flex items-center gap-2">
-                          <span className="font-medium">${(item.price * item.quantity).toFixed(2)}</span>
-                          <button 
+                          <span className="font-medium">
+                            ${(item.price * item.quantity).toFixed(2)}
+                          </span>
+                          <button
                             onClick={() => removeFromCart(item.id)}
                             className="text-red-500 hover:text-red-700"
                           >
@@ -81,7 +92,7 @@ export default function CartPage() {
             </ul>
           </div>
         </div>
-        
+
         <div className="md:col-span-1">
           <div className="bg-white rounded-lg shadow-md p-6 sticky top-24">
             <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
@@ -100,13 +111,14 @@ export default function CartPage() {
               </div>
             </div>
             <Link href="/checkout">
-              <Button 
-                className="w-full bg-blue-500 hover:bg-blue-600"
-              >
+              <Button className="w-full bg-blue-500 hover:bg-blue-600">
                 Proceed to Checkout
               </Button>
             </Link>
-            <Link href="/" className="block text-center mt-4 text-blue-500 hover:underline">
+            <Link
+              href="/"
+              className="block text-center mt-4 text-blue-500 hover:underline"
+            >
               Continue Shopping
             </Link>
           </div>

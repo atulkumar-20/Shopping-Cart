@@ -1,16 +1,43 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Slider } from '@/components/ui/slider';
 
 interface FilterSidebarProps {
   className?: string;
+  selectedCategory: string;
+  onCategoryChange: (category: string) => void;
+  priceRange: number[];
+  onPriceChange: (priceRange: number[]) => void;
 }
 
-export const FilterSidebar = ({ className }: FilterSidebarProps) => {
-  const [category, setCategory] = useState('All');
-  const [priceRange, setPriceRange] = useState([0, 1000]);
+export const FilterSidebar = ({ 
+  className, 
+  selectedCategory, 
+  onCategoryChange, 
+  priceRange, 
+  onPriceChange 
+}: FilterSidebarProps) => {
+  const categories = ['All', 'Electronics', 'Clothing', 'Home', 'Shoes'];
   
-  const categories = ['All', 'Electronics', 'Clothing', 'Home'];
+  // Local state to handle slider changes before committing
+  const [localPriceRange, setLocalPriceRange] = useState(priceRange);
+  
+  // Update local state when props change
+  useEffect(() => {
+    setLocalPriceRange(priceRange);
+  }, [priceRange]);
+  
+  // Handle slider change and commit after a delay
+  const handlePriceChange = (newValue: number[]) => {
+    setLocalPriceRange(newValue);
+    
+    // Debounce price changes to avoid too many URL updates
+    const timeoutId = setTimeout(() => {
+      onPriceChange(newValue);
+    }, 300);
+    
+    return () => clearTimeout(timeoutId);
+  };
   
   return (
     <div className={`rounded-lg overflow-hidden ${className}`}>
@@ -26,8 +53,8 @@ export const FilterSidebar = ({ className }: FilterSidebarProps) => {
                   type="radio"
                   name="category"
                   value={cat}
-                  checked={category === cat}
-                  onChange={() => setCategory(cat)}
+                  checked={selectedCategory === cat}
+                  onChange={() => onCategoryChange(cat)}
                   className="w-4 h-4 text-blue-500 accent-white"
                 />
                 <span>{cat}</span>
@@ -40,16 +67,15 @@ export const FilterSidebar = ({ className }: FilterSidebarProps) => {
           <h3 className="font-medium mb-2">Price</h3>
           <div className="px-1">
             <Slider
-              defaultValue={[0, 1000]}
-              max={1000}
-              step={10}
-              value={priceRange}
-              onValueChange={setPriceRange}
+              max={5000}
+              step={100}
+              value={localPriceRange}
+              onValueChange={handlePriceChange}
               className="my-4"
             />
             <div className="flex justify-between text-sm">
-              <span>{priceRange[0]}</span>
-              <span>{priceRange[1]}</span>
+              <span>${localPriceRange[0]}</span>
+              <span>${localPriceRange[1]}</span>
             </div>
           </div>
         </div>
