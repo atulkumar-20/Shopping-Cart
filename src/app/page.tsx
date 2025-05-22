@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button';
 import { FilterSidebar } from '@/components/FilterSidebar';
 import { FilterCategory } from '@/components/FilterCategory';
 import { Filter } from 'lucide-react';
+import { ProductCard } from '@/components/ProductCard';
+import { products } from '@/data/products';
 
 const Page = () => {
   const [showFilters, setShowFilters] = useState(false);
@@ -47,16 +49,9 @@ const Page = () => {
 
         <main className="flex-1">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Product cards would go here */}
-            <div className="h-64 bg-gray-100 rounded-lg flex items-center justify-center">
-              Product 1
-            </div>
-            <div className="h-64 bg-gray-100 rounded-lg flex items-center justify-center">
-              Product 2
-            </div>
-            <div className="h-64 bg-gray-100 rounded-lg flex items-center justify-center">
-              Product 3
-            </div>
+            {products.map(product => (
+              <ProductCard key={product.id} product={product} />
+            ))}
           </div>
         </main>
       </div>

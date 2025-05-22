@@ -1,8 +1,9 @@
 'use client';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Search, ShoppingCart, Menu } from 'lucide-react';
+import { Search, Menu } from 'lucide-react';
 import { useState } from 'react';
+import { Cart } from '@/components/Cart';
 
 export const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -27,14 +28,7 @@ export const Header = () => {
         </div>
 
         <div className="flex items-center gap-2">
-          <Button
-            variant="ghost"
-            size="lg"
-            aria-label="Shopping cart"
-            className="text-white"
-          >
-            <ShoppingCart size={24} />
-          </Button>
+          <Cart />
 
           {/* Mobile menu button */}
           <Button
