@@ -3,12 +3,12 @@ import {
   createContext,
   useContext,
   useState,
-  ReactNode,
   useEffect,
+  ReactNode,
 } from 'react';
-import { Product } from '@/data/products';
+import { Product } from '@/types/product';
 
-interface CartItem extends Product {
+export interface CartItem extends Product {
   quantity: number;
 }
 
@@ -38,16 +38,18 @@ const getLocalStorageItems = (): CartItem[] => {
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    setIsClient(true);
     setItems(getLocalStorageItems());
   }, []);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (isClient) {
       localStorage.setItem('cartItems', JSON.stringify(items));
     }
-  }, [items]);
+  }, [items, isClient]);
 
   const addToCart = (product: Product) => {
     setItems((prevItems) => {
@@ -87,7 +89,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
   };
 
   const totalItems = items.reduce((total, item) => total + item.quantity, 0);
-
   const totalPrice = items.reduce(
     (total, item) => total + item.price * item.quantity,
     0,
